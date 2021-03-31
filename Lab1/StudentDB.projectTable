@@ -1,0 +1,125 @@
+qlsh> use students;
+cqlsh:students> create table project_details(
+            ... project_id int,
+            ... project_name text,
+            ... stud_name text,
+            ... rating double,
+            ... duration int,
+            ... primary key(project_id,project_name));
+cqlsh:students> begin batch
+            ... insert into project_details(project_id,project_name,stud_name,rating,duration)
+            ... values(1,'MS data migration','Mahira Raj',3.5,720)
+            ... apply batch;
+cqlsh:students> select * from project_details;
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+------------
+          1 | MS data migration |      720 |    3.5 | Mahira Raj
+
+(1 rows)
+cqlsh:students> begin batch insert into project_details(project_id,project_name,stud_name,rating,duration) values(1,'MS data warehouse','Mahira Raj',3.9,1440) apply batch;
+cqlsh:students> begin batch insert into project_details(project_id,project_name,stud_name,rating,duration) values(2,'Sap reporting','Michael Storm',4.2,3000) apply batch;
+cqlsh:students> begin batch insert into project_details(project_id,project_name,stud_name,rating,duration) values(2,'Sap BI DW','Michael Storm',4,9000) apply batch;
+cqlsh:students> select * from project_details;
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+---------------
+          1 | MS data migration |      720 |    3.5 |    Mahira Raj
+          1 | MS data warehouse |     1440 |    3.9 |    Mahira Raj
+          2 |         Sap BI DW |     9000 |      4 | Michael Storm
+          2 |     Sap reporting |     3000 |    4.2 | Michael Storm
+
+(4 rows)
+cqlsh:students> select * from project_details where project_id=1;
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+------------
+          1 | MS data migration |      720 |    3.5 | Mahira Raj
+          1 | MS data warehouse |     1440 |    3.9 | Mahira Raj
+
+(2 rows)
+
+cqlsh:students> select * from project_details where project_id=1 order by project_name desc;
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+------------
+          1 | MS data warehouse |     1440 |    3.9 | Mahira Raj
+          1 | MS data migration |      720 |    3.5 | Mahira Raj
+
+(2 rows)
+
+cqlsh:students> select * from project_details where project_id in (1,2);
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+---------------
+          1 | MS data migration |      720 |    3.5 |    Mahira Raj
+          1 | MS data warehouse |     1440 |    3.9 |    Mahira Raj
+          2 |         Sap BI DW |     9000 |      4 | Michael Storm
+          2 |     Sap reporting |     3000 |    4.2 | Michael Storm
+
+(4 rows)
+
+cqlsh:students> begin batch insert into project_details(project_id,project_name,stud_name,rating,duration) values(1,'MS data warehouse','Shrushti Das',3.1,3000) apply batch;
+cqlsh:students> select * from project_details;
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+---------------
+          1 | MS data migration |      720 |    3.5 |    Mahira Raj
+          1 | MS data warehouse |     3000 |    3.1 |  Shrushti Das
+          2 |         Sap BI DW |     9000 |      4 | Michael Storm
+          2 |     Sap reporting |     3000 |    4.2 | Michael Storm
+
+(4 rows)
+cqlsh:students> select * from project_details where project_id=1 order by project_name desc;
+
+ project_id | project_name      | duration | rating | stud_name
+------------+-------------------+----------+--------+--------------
+          1 | MS data warehouse |     3000 |    3.1 | Shrushti Das
+          1 | MS data migration |      720 |    3.5 |   Mahira Raj
+
+(2 rows)
+
+cqlsh:students> begin batch insert into project_details(project_id,project_name,stud_name,rating,duration) values(1,'Big Data Analytics','Piyush',4.1,1000) apply batch;
+cqlsh:students> select * from project_details;
+
+ project_id | project_name       | duration | rating | stud_name
+------------+--------------------+----------+--------+---------------
+          1 | Big Data Analytics |     1000 |    4.1 |        Piyush
+          1 |  MS data migration |      720 |    3.5 |    Mahira Raj
+          1 |  MS data warehouse |     3000 |    3.1 |  Shrushti Das
+          2 |          Sap BI DW |     9000 |      4 | Michael Storm
+          2 |      Sap reporting |     3000 |    4.2 | Michael Storm
+
+(5 rows)
+cqlsh:students> begin batch insert into project_details(project_id,project_name,stud_name,rating,duration) values(2,'Big Data Analytics','Prakash',3.7,6000) apply batch;
+cqlsh:students> select * from project_details;
+
+ project_id | project_name       | duration | rating | stud_name
+------------+--------------------+----------+--------+---------------
+          1 | Big Data Analytics |     1000 |    4.1 |        Piyush
+          1 |  MS data migration |      720 |    3.5 |    Mahira Raj
+          1 |  MS data warehouse |     3000 |    3.1 |  Shrushti Das
+          2 | Big Data Analytics |     6000 |    3.7 |       Prakash
+          2 |          Sap BI DW |     9000 |      4 | Michael Storm
+          2 |      Sap reporting |     3000 |    4.2 | Michael Storm
+
+(6 rows)
+cqlsh:students> PAGING OFF
+Disabled Query paging.
+cqlsh:students> select * from project_details where project_id in (1,2) order by project_name desc;
+
+ project_id | project_name       | duration | rating | stud_name
+------------+--------------------+----------+--------+---------------
+          2 |      Sap reporting |     3000 |    4.2 | Michael Storm
+          2 |          Sap BI DW |     9000 |      4 | Michael Storm
+          1 |  MS data warehouse |     3000 |    3.1 |  Shrushti Das
+          1 |  MS data migration |      720 |    3.5 |    Mahira Raj
+          1 | Big Data Analytics |     1000 |    4.1 |        Piyush
+          2 | Big Data Analytics |     6000 |    3.7 |       Prakash
+
+(6 rows)
+cqlsh:students> paging on
+Now Query paging is enabled
+Page size: 100
+cqlsh:students> 
+
