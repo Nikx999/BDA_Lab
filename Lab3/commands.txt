@@ -1,0 +1,86 @@
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+1)
+> use student
+switched to db student
+2)
+> db.student.insert({rollno:49,name:"M K Gagan roshan",age:20,contact:9380417069,email:"gagan.cs18@bmsce.ac.in"})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollno:85,name:"Rudramuni GM",age:20,contact:9380417068,email:"rudramuni.cs18@bmsce.ac.in"})
+WriteResult({ "nInserted" : 1 })
+3)
+> db.student.find().pretty()
+{
+        "_id" : ObjectId("606acd09e61057d8cb0bfad5"),
+        "rollno" : 49,
+        "name" : "M K Gagan roshan",
+        "age" : 20,
+        "contact" : 9380417069,
+        "email" : "gagan.cs18@bmsce.ac.in"
+}
+{
+        "_id" : ObjectId("606acd40e61057d8cb0bfad6"),
+        "rollno" : 85,
+        "name" : "Rudramuni GM",
+        "age" : 20,
+        "contact" : 9380417068,
+        "email" : "rudramuni.cs18@bmsce.ac.in"
+}
+4)
+> db.student.update({"rollno":85},{$set:{"name":"nikhil"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.student.update({"rollno":85},{$set:{"email":"nikhil.cs18@bmsce.ac.in"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+5)
+> db.student.find().pretty()
+{
+        "_id" : ObjectId("606acd09e61057d8cb0bfad5"),
+        "rollno" : 49,
+        "name" : "M K Gagan roshan",
+        "age" : 20,
+        "contact" : 9380417069,
+        "email" : "gagan.cs18@bmsce.ac.in"
+}
+{
+        "_id" : ObjectId("606acd40e61057d8cb0bfad6"),
+        "rollno" : 85,
+        "name" : "nikhil",
+        "age" : 20,
+        "contact" : 9380417068,
+        "email" : "nikhil.cs18@bmsce.ac.in"
+}
+
+6)
+C:\Program Files\MongoDB\Server\4.0\bin>mongoexport --db=student --collection=student --type=csv --fields=rollno,name,age,contact,email --out=D:\BDA\student.csv
+2021-04-05T14:25:05.138+0530    connected to: localhost
+2021-04-05T14:25:05.178+0530    exported 2 records
+
+7)
+>db.dropDatabase()
+
+8)
+C:\Program Files\MongoDB\Server\4.0\bin>mongoimport -d student -c student --type csv --file=D:\BDA\student.csv --headerline
+2021-04-05T14:56:43.552+0530    connected to: localhost
+2021-04-05T14:56:43.595+0530    imported 2 documents
+
+
+> db.student.find().pretty()
+{
+        "_id" : ObjectId("606ad551656a2a121d10a301"),
+        "rollno" : 49,
+        "name" : "M K Gagan roshan",
+        "age" : 20,
+        "contact" : 9380417069,
+        "email" : "gagan.cs18@bmsce.ac.in"
+}
+{
+        "_id" : ObjectId("606ad556656a2a121d10a302"),
+        "rollno" : 85,
+        "name" : "Rudramuni GM",
+        "age" : 20,
+        "contact" : 9380417068,
+        "email" : "rudramuni.cs18@bmsce.ac.in"
+}
