@@ -1,0 +1,105 @@
+gagan@gagan-VirtualBox:~$ start-all.sh
+WARNING: Attempting to start all Apache Hadoop daemons as gagan in 10 seconds.
+WARNING: This is not a recommended production deployment configuration.
+WARNING: Use CTRL-C to abort.
+Starting namenodes on [localhost]
+Starting datanodes
+localhost: datanode is running as process 3200.  Stop it first.
+Starting secondary namenodes [gagan-VirtualBox]
+gagan-VirtualBox: secondarynamenode is running as process 3390.  Stop it first.
+Starting resourcemanager
+resourcemanager is running as process 3584.  Stop it first.
+Starting nodemanagers
+localhost: nodemanager is running as process 3729.  Stop it first.
+gagan@gagan-VirtualBox:~$ hdfs dfs -mkdir /posts
+
+gagan@gagan-VirtualBox:~$ hdfs dfs -put /home/gagan/sampleposts.tsv  /posts
+gagan@gagan-VirtualBox:~$ hdfs dfs -mkdir /users
+gagan@gagan-VirtualBox:~$ hdfs dfs -put /home/gagan/sampleusers.tsv /users
+gagan@gagan-VirtualBox:~$ hadoop jar /home/gagan/join.jar /posts /users /output
+2021-06-13 14:46:23,315 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+2021-06-13 14:46:23,935 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+2021-06-13 14:46:24,462 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/gagan/.staging/job_1623575365851_0001
+2021-06-13 14:46:25,124 INFO mapred.FileInputFormat: Total input files to process : 1
+2021-06-13 14:46:25,203 INFO mapred.FileInputFormat: Total input files to process : 1
+2021-06-13 14:46:25,371 INFO mapreduce.JobSubmitter: number of splits:4
+2021-06-13 14:46:25,932 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1623575365851_0001
+2021-06-13 14:46:25,934 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2021-06-13 14:46:26,453 INFO conf.Configuration: resource-types.xml not found
+2021-06-13 14:46:26,453 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2021-06-13 14:46:26,974 INFO impl.YarnClientImpl: Submitted application application_1623575365851_0001
+2021-06-13 14:46:27,243 INFO mapreduce.Job: The url to track the job: http://gagan-VirtualBox:8088/proxy/application_1623575365851_0001/
+2021-06-13 14:46:27,263 INFO mapreduce.Job: Running job: job_1623575365851_0001
+2021-06-13 14:46:44,952 INFO mapreduce.Job: Job job_1623575365851_0001 running in uber mode : false
+2021-06-13 14:46:44,956 INFO mapreduce.Job:  map 0% reduce 0%
+2021-06-13 14:47:23,744 INFO mapreduce.Job:  map 25% reduce 0%
+2021-06-13 14:47:24,777 INFO mapreduce.Job:  map 100% reduce 0%
+2021-06-13 14:47:32,866 INFO mapreduce.Job:  map 100% reduce 100%
+2021-06-13 14:47:33,914 INFO mapreduce.Job: Job job_1623575365851_0001 completed successfully
+2021-06-13 14:47:34,164 INFO mapreduce.Job: Counters: 55
+	File System Counters
+		FILE: Number of bytes read=155
+		FILE: Number of bytes written=1178508
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=2617
+		HDFS: Number of bytes written=71
+		HDFS: Number of read operations=17
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Killed map tasks=1
+		Launched map tasks=4
+		Launched reduce tasks=1
+		Data-local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=148416
+		Total time spent by all reduces in occupied slots (ms)=6778
+		Total time spent by all map tasks (ms)=148416
+		Total time spent by all reduce tasks (ms)=6778
+		Total vcore-milliseconds taken by all map tasks=148416
+		Total vcore-milliseconds taken by all reduce tasks=6778
+		Total megabyte-milliseconds taken by all map tasks=151977984
+		Total megabyte-milliseconds taken by all reduce tasks=6940672
+	Map-Reduce Framework
+		Map input records=7
+		Map output records=7
+		Map output bytes=135
+		Map output materialized bytes=173
+		Input split bytes=772
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=4
+		Reduce shuffle bytes=173
+		Reduce input records=7
+		Reduce output records=3
+		Spilled Records=14
+		Shuffled Maps =4
+		Failed Shuffles=0
+		Merged Map outputs=4
+		GC time elapsed (ms)=4301
+		CPU time spent (ms)=7280
+		Physical memory (bytes) snapshot=1283768320
+		Virtual memory (bytes) snapshot=13195472896
+		Total committed heap usage (bytes)=1281900544
+		Peak Map Physical memory (bytes)=280875008
+		Peak Map Virtual memory (bytes)=2638364672
+		Peak Reduce Physical memory (bytes)=171880448
+		Peak Reduce Virtual memory (bytes)=2646368256
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=71
+gagan@gagan-VirtualBox:~$ hdfs dfs -cat /output/*
+"100005361"	"2"		"36134"
+"100018705"	"2"		"76"
+"100022094"	"0"		"6354"
+
