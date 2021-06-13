@@ -1,0 +1,35 @@
+scala> val textfile = sc.textFile("file:///home/gagan/input.txt")
+textfile: org.apache.spark.rdd.RDD[String] = file:///home/gagan/input.txt MapPartitionsRDD[1] at textFile at <console>:24
+
+scala> val counts = textfile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(_ + _) 
+counts: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[4] at reduceByKey at <console>:25
+
+scala> counts.collect()
+res0: Array[(String, Int)] = Array((Deer,3), (Car,2), (River,1), (Gagan,2))   
+
+
+
+scala> val textfile = sc.textFile("file:///home/gagan/input.txt")
+textfile: org.apache.spark.rdd.RDD[String] = file:///home/gagan/input.txt MapPartitionsRDD[1] at textFile at <console>:24
+
+scala> val counts = textfile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(_ + _) 
+counts: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[4] at reduceByKey at <console>:25
+
+scala> import scala.collection.immutable.ListMap
+import scala.collection.immutable.ListMap
+
+scala> val sorted=ListMap(counts.collect.sortWith(_._2 > _._2):_*)
+sorted: scala.collection.immutable.ListMap[String,Int] = ListMap(Deer -> 4, Gagan -> 3, Car -> 2, "" -> 1, River -> 1)
+
+scala> println(sorted)
+ListMap(Deer -> 4, Gagan -> 3, Car -> 2,  -> 1, River -> 1)
+
+scala> for((k,v)<-sorted)
+     | {
+     | if(v>=4)
+     | {
+     | println(k+"-"+v)
+     | }
+     | }
+Deer-4
+  
